@@ -1,4 +1,4 @@
-# Video Question Answering
+# Video Question Answering - TDiCE model
 This GitHub repository is Yizheng Sun's third-year project for <strong>COMP30040&30030 Third Year Project Laboratory 2022-23 Full Year</strong> at The University of Manchester. Yizheng Sun proposes and constructs <strong>Three-Stream Vision-Language Decoding with Cross-Attention and Emphasis (TDiCE)</strong> model for vision language tasks.
 
 ## Project description
