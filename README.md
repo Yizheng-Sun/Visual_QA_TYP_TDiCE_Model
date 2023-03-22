@@ -1,5 +1,5 @@
 # Video Question Answering
-This GitHub repository is Yizheng Sun's third-year project for <strong>COMP30040&30030 Third Year Project Laboratory 2022-23 Full Year</strong> at The University of Manchester. Yizheng Sun proposes and constructs<strong>Three-stream Vision-Language Decoding with Cross-Attention and emphasis(TDiCE)</strong> model for vision language tasks.
+This GitHub repository is Yizheng Sun's third-year project for <strong>COMP30040&30030 Third Year Project Laboratory 2022-23 Full Year</strong> at The University of Manchester. Yizheng Sun proposes and constructs <strong>Three-Stream Vision-Language Decoding with Cross-Attention and Emphasis (TDiCE)</strong> model for vision language tasks.
 
 ## Project description
 This project performs video and image question-answering: Users can input an mp4 format short video or a picture and questions. The program will generate the answers. 
