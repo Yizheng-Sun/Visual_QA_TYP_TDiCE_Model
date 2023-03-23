@@ -36,6 +36,7 @@ import os
 import shutil
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
+from PIL import Image, ImageTk
 nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('omw-1.4')
@@ -98,11 +99,13 @@ def UploadAction(event=None):
 
 print(frame_list)
 
-root = tk.Tk()
-button = tk.Button(root, text='Open', command=UploadAction)
+root = tk.Tk(className='Model UI')
+root.geometry("500x200")
+button = tk.Button(root, text='Upload a video', command=UploadAction)
 button.pack()
 
-
+L1 = tk.Label(text="Input questions: ", font = ("Comic Sans MS", 17, "bold"))
+L1.pack()
 textField = tk.Entry(root, width = 100)
 textField.pack(fill=tk.NONE)
 
@@ -110,7 +113,6 @@ def predict(question):
   # print(question)
   answers = []
   lemmatizer = WordNetLemmatizer()
-  global frame_list
   path = frame_list[0]
   img = tf.io.read_file(path)
   img = tf.io.decode_jpeg(img, channels=3)
@@ -118,13 +120,10 @@ def predict(question):
   img = img/255
   img = tf.transpose(img)
   img = tf.expand_dims(img, 0)
-
-  convas = tk.Canvas(root, width=500, height=700)
   for q in question:
-    if q==" ":
+    if q=="":
       continue
     print(q)
-    oq = q
     tokens = word_tokenize(q)
     tokens = [t.lower() for t in tokens if t not in '''!,.;?()-[]{};:'"\<>/@#$+%^&*_~ ''']
     tokens = [lemmatizer.lemmatize(t) for t in tokens]
@@ -133,26 +132,45 @@ def predict(question):
     predictions = model((img, q))
     prediction = tf.argmax(predictions, axis=-1)
     answer = ''
-    # for w in index_to_word(prediction).numpy()[0]:
-    #   answer =  w.decode("utf-8")
-    # answers.append(answer)
-    # convas.create_text(fill='black', text = "Q: "+oq)
-    # convas.create_text(fill='black', text = "Model Answer: "+ answer)
-    return answer
+    for w in index_to_word(prediction).numpy()[0]:
+      answer =  w.decode("utf-8")
+      answers.append(answer)
+      # convas.create_text(fill='black', text = "Q: "+oq)
+      # convas.create_text(fill='black', text = "Model Answer: "+ answer)
+  return answers
 def query(event=None):
   question = textField.get()
   question = question.split('?')
+  print(question)
   answers = predict(question)
   print(answers)
-
-
   #   convas.create_text(fill='black', text = " \n")
-    # print("Q: "+oq)
-    # print("Model Answer: "+ answer)
-    # print(' ')
-    # with open('answer.txt', 'a') as the_file:
-    #   the_file.write("Q: "+oq)
-    #   the_file.write("Model Answer: "+ answer)
+  # print("Q: "+oq)
+  # print("Model Answer: "+ answer)
+  # print(' ')
+  # with open('answer.txt', 'a') as the_file:
+  #   the_file.write("Q: "+oq)
+  #   the_file.write("Model Answer: "+ answer)
+
+  image1 = Image.open("frames/0.jpg")
+  image1= image1.resize((224,224), Image.ANTIALIAS)
+  test = ImageTk.PhotoImage(image1)
+
+  label0 = tk.Label(text='The sample frame:', font = ("Comic Sans MS", 17, "bold"))
+  label0.pack()
+  label1 = tk.Label(image=test)
+  label1.image = test
+  label1.pack()
+
+  L2 = tk.Label(text="Answers: ", font = ("Comic Sans MS", 17, "bold"))
+  L2.pack()
+  for i in range(len(question)-1):
+      Output = tk.Text(root, height = 3,
+                width = 40,
+                bg = "light cyan")
+      Output.insert(tk.END, "Q: " + question[i]+"\n")
+      Output.insert(tk.END, "A: " + answers[i])
+      Output.pack()
     
    
 askBtn = tk.Button(root, text='Ask', command=query)
